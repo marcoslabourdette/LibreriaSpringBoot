@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Library SB | Inicio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="/images/hoja.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header id="header">
+        <a href="#">
+            <div class="logo">
+                <span>Library SB</span>
+                <img src="/images/hoja.png" alt="logo">
+            </div>
+        </a>
+        <nav class="navbar">
+            <ul class="navbar-menu">
+                <a id="cerrar" class="cerrar-menu"><i class="bi bi-x"></i></a>
+                <li class="navbar-item"><a href="#">Inicio</a></li>
+                <li class="navbar-item"><a href="#libros">Libros</a></li>
+                <li class="navbar-item"><a href="">Autores</a></li>
+                <li class="navbar-item"><a href="">Editoriales</a></li>
+            </ul>
+            <div class="navbar-icon">
+                <a id="btnMenu"><i class="bi bi-list"></i></a>
+            </div>
+        </nav>
+        <div id="modalOverlay"></div>
+    </header>
+    <main class="main-container">
+        <div class="banner">
+            <div class="banner-text">
+                <h1>Library <strong>SB</strong></h1>
+                <p>Biblioteca virtual, gestioná tus libros y más!</p>
+            </div>
+        </div>
+        <article class="articulo">
+            <h2>🌱 ¡Comenzá a administrar tu biblioteca! 🌱</h2>
+            <section class="container-cards">
+                <div class="card">
+                    <div class="card-title">
+                    <h3>¡Guardá tus libros preferidos!</h3>
+                    </div>
+                    <i class="bi bi-bookmark-heart"></i>
+                    <p>Guardá tus libros favoritos en tu biblioteca personal para tenerlos siempre a mano.</p>
+                    <a href="">Registrá tus libros</a>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        <h3>Gestioná autores y editoriales</h3>
+                    </div>
+                    <i class="bi bi-people"></i>
+                    <p>Agregá, editá o eliminá información sobre autores y editoriales de tus libros.</p>
+                    <a href="">Registrá autores</a>
+                </div>
+                <div class="card">
+                    <div class="card-title">
+                        <h3>Descargá reportes actualizados</h3>
+                    </div>
+                    <i class="bi bi-file-earmark-bar-graph"></i>
+                    <p>Generá informes sobre tu biblioteca para realizar un seguimiento de tu colección.</p>
+                    <a href="">Descargar reportes</a>
+                </div>
+            </section>
+        </article>
+        <section class="container-libros">
+            <h2 id="libros" class="title-pages">Administrá tus libros.</h2>
+            <div th:if="${libros != null and not #lists.isEmpty(libros)}" class="tabla-libros">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ISBN</th>
+                            <th scope="col">Título</th>
+                            <th scope="col">Autor</th>
+                            <th>Detalle</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="libro:${libros}">
+                            <td th:text="${libro.isbn}"></td>
+                            <td th:text="${libro.titulo}"></td>
+                            <td th:text="${libro.autor.nombre}"></td>
+                            <td><i title="Ver detalle." class="bi bi-info-circle"></i></td>
+                            <td><i title="Modificar libro." class="bi bi-pencil-square"></i><i title="Eliminar libro." class="bi bi-trash"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="libros-empty" th:if="${libros == null or #lists.isEmpty(libros)}">
+                <img width="30px" src="/images/hoja.png" alt="">
+                <p>No hay libros en tu biblioteca.</p>
+            </div>
+            <div class="div-exito" id="mensaje-exito" th:if="${exito != null}">
+                <p th:text=${exito}></p>
+            </div>
+            <div class="div-error" id="mensaje-exito" th:if="${error != null}">
+                <p th:text=${error}></p>
+            </div>
+            <a id="btnModal">Agregar libro</a>
+            <div class="home">
+                <div class="home-text">
+                    <a class="cerrar-modal"><i class="bi bi-x"></i></a>
+                    <h3>Registrar libro</h3>
+                    <form class="form" action="/libro/registrar" method="POST">
+                        <div class="form-group">
+                            <label for="ib">ISBN</label>
+                            <input id="ib" name="isbn" type="text" placeholder="Ingrese el ISBN" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Título</label>
+                            <input id="title" name="titulo" type="text" placeholder="Ingrese el título." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descrip">Descripción</label>
+                            <input id="descrip" name="descripcion" type="text" placeholder="Ingrese una breve descripción." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="seAutor">Selecciona un autor:</label>
+                            <select name="autorID" id="seAutor" required>
+                                <option disabled selected>Autores</option>
+                                <option th:each="autor:${autores}" th:value="${autor.id}" th:text="${autor.nombre}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="seEditorial">Selecciona una editorial:</label>
+                            <select name="editorialID" id="seEditorial" required>
+                                <option disabled selected>Editoriales</option>
+                                <option th:each="editorial:${editoriales}" th:value="${editorial.id}" th:text="${editorial.nombre}"></option>
+                            </select>
+                        </div>
+                        <input class="btn-form" type="submit" value="¡Guardar!">
+                    </form>
+                </div>
+                <aside class="home-img">
+                    <img src="/images/formimage.png" alt="imagen-formulario">
+                </aside>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p style="color: white;">© Copyright  2024 | Marcos Labourdette</p>
+    </footer>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
