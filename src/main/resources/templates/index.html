@@ -29,9 +29,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <ul class="navbar-menu">
                 <a id="cerrar" class="cerrar-menu"><i class="bi bi-x"></i></a>
                 <li class="navbar-item"><a href="#">Inicio</a></li>
-                <li class="navbar-item"><a href="#libros">Libros</a></li>
                 <li class="navbar-item"><a href="">Autores</a></li>
                 <li class="navbar-item"><a href="">Editoriales</a></li>
+                <li class="navbar-item"><a href="#libros">Libros</a></li>
             </ul>
             <div class="navbar-icon">
                 <a id="btnMenu"><i class="bi bi-list"></i></a>
@@ -55,7 +55,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     </div>
                     <i class="bi bi-bookmark-heart"></i>
                     <p>Guardá tus libros favoritos en tu biblioteca personal para tenerlos siempre a mano.</p>
-                    <a href="">Registrá tus libros</a>
+                    <a href="#libros">Registrá tus libros</a>
                 </div>
                 <div class="card">
                     <div class="card-title">
@@ -75,8 +75,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
             </section>
         </article>
-        <section class="container-libros">
-            <h2 id="libros" class="title-pages">Administrá tus libros.</h2>
+        <section id="libros" class="container-libros">
+            <h2 class="title-pages">Administrá tus libros.</h2>
             <div th:if="${libros != null and not #lists.isEmpty(libros)}" class="tabla-libros">
                 <table class="table">
                     <thead>
@@ -89,15 +89,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="libro:${libros}">
+                        <tr th:each="libro:${libros}" th:attr="data-isbn=${libro.isbn}, 
+                        data-titulo=${libro.titulo}, 
+                        data-autor=${libro.autor.nombre}, 
+                        data-editorial=${libro.editorial.nombre}, 
+                        data-descripcion=${libro.descripcion}">
                             <td th:text="${libro.isbn}"></td>
                             <td th:text="${libro.titulo}"></td>
                             <td th:text="${libro.autor.nombre}"></td>
-                            <td><i title="Ver detalle." class="bi bi-info-circle"></i></td>
-                            <td><i title="Modificar libro." class="bi bi-pencil-square"></i><i title="Eliminar libro." class="bi bi-trash"></i></td>
+                            <td><i onclick="mostrarInfoLibro(this.parentNode.parentNode)" title="Ver detalle." class="bi bi-info-circle"></i></td>
+                            <td><i onclick="mostrarModalModificar(this.parentNode.parentNode)" title="Modificar libro." class="bi bi-pencil-square"></i><a th:href="@{/libro/eliminar/__${libro.isbn}__}"><i title="Eliminar libro." class="bi bi-trash btnEliminarLibro"></i></a></td>
                         </tr>
                     </tbody>
                 </table>
+               
             </div>
             <div class="libros-empty" th:if="${libros == null or #lists.isEmpty(libros)}">
                 <img width="30px" src="/images/hoja.png" alt="">
@@ -109,11 +114,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div class="div-error" id="mensaje-exito" th:if="${error != null}">
                 <p th:text=${error}></p>
             </div>
-            <a id="btnModal">Agregar libro</a>
+            <a onclick="mostrarModalAgregar()" id="btnModal">Agregar libro</a>
             <div class="home">
                 <div class="home-text">
                     <a class="cerrar-modal"><i class="bi bi-x"></i></a>
-                    <h3>Registrar libro</h3>
+                    <h3>Agregar libro</h3>
                     <form class="form" action="/libro/registrar" method="POST">
                         <div class="form-group">
                             <label for="ib">ISBN</label>
@@ -150,6 +155,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </section>
     </main>
+    <div class="infoLibro">
+        
+    </div>
     <footer class="footer">
         <p style="color: white;">© Copyright  2024 | Marcos Labourdette</p>
     </footer>

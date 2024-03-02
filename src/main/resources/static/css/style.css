@@ -6,7 +6,7 @@
 
 html {
     scroll-behavior: smooth;
-
+    scroll-padding: 50px;
 }
 
 body {
@@ -58,7 +58,6 @@ header {
 }
 
 .title-pages {
-    font-size: 27px;
     margin-top: 60px;
     margin-bottom: 20px;
 }
@@ -117,7 +116,7 @@ header {
     transition: .3s;
 }
 
-.card a:hover {
+.card a:hover, #btnModal:hover {
     color: rgb(82, 141, 50);
     border-color: rgb(82, 141, 50);
     background-color: white;
@@ -194,7 +193,7 @@ i{
     width: 0;
     height: 2px;
     background-color: rgb(82, 141, 50);
-    transition: width 0.3s ease;
+    transition: width 0.2s ease;
 }
 
 .navbar-item a:hover::before {
@@ -231,7 +230,7 @@ i{
 }
 
 .bi-list:hover,
-.cerrar-menu:hover,.cerrar-modal:hover {
+.cerrar-menu:hover,.cerrar-modal:hover, .infoLibro > .cerrar-modal:hover {
     color: rgb(253, 161, 177);
 }
 
@@ -283,7 +282,7 @@ i{
     padding: 20px;
     border-radius: 40px;
     transform: scale(.1);
-    transition: opacity 0.6s, transform 0.6s; 
+    transition: opacity 1s, transform 0.6s; 
     width: 75%;
     z-index: 600;
 }
@@ -292,7 +291,6 @@ i{
     width: 50%;
     text-align: start;
     background: white;
-    height: 500px;
     color: black;
 }
 
@@ -307,12 +305,13 @@ i{
 }
 
 .visibleModal {
-    top: 50%;
     display: flex;
     opacity: 1;
-    transform: scale(1);
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: scale(1) translate(-50%, -50%);
+ 
+
 }
 
 .form {
@@ -357,7 +356,6 @@ i{
 
 .home-img {
     width: 40%;
-    height: 500px;
     display: flex;
     align-items: center;
     background-color: rgb(82, 141, 50);
@@ -434,16 +432,20 @@ i{
     text-align: start;
 }
 .table td i{
+    color: rgb(82, 141, 50); 
     margin: 10px;
 }
 #btnModal{
     margin-top: 50px;
-    margin-bottom: 50px;
+    margin-bottom:70px;
     font-size: 14px;
     border-radius: 20px;
-    padding: 5px;
     background-color: rgb(82, 141, 50);
     color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 7px;
+    transition: .3s;
     
 }
 .footer {
@@ -456,8 +458,61 @@ i{
     height: 200px;
     background-color: rgb(82, 141, 50);
 }
-.div-exito{
+/* Estilos para el modal */
+.infoLibro {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 300px;
+    max-width: 70vw;
+    max-height: 80vh; 
+    overflow-y: auto; 
+    background-color: white;
+    padding: 15px;
+    border-radius: 20px;
+    color:  rgb(82, 141, 50);
+    z-index: 600;
+}
+
+/* Estilos para el botón de cerrar */
+.infoLibro > .cerrar-modal {
     position: absolute;
+    color: rgb(82, 141, 50);
+    top: 0;
+    right: 10px;
+    cursor: pointer;
+}
+
+.infoLibro > div {
+    margin-top: 20px;
+    text-align: left;
+}
+.infoLibro h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.infoLibro p {
+    margin-bottom: 10px;
+}
+.autores{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+.div-exito{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     opacity: 1;
     padding: 10px;
     border-radius: 20px;
@@ -479,6 +534,9 @@ i{
 .libros-empty p{
     color: rgb(199, 30, 58);
     font-size: 20px;
+}
+.container-libros{
+    padding-top: 30px;
 }
 
 @media (max-width: 1186px) {
@@ -567,6 +625,10 @@ i{
 
     .card a {
         bottom: 35px;
+    }
+ 
+    .infoLibro{
+        width: 80vw;
     }
 }
 

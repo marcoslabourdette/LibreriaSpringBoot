@@ -33,8 +33,8 @@ public class LibroService {
     @Autowired
     private AutorRepository autorRepository;
     @Transactional
-    public void crearLibro(@RequestParam(required = false) Long isbn, @RequestParam String titulo,
-            @RequestParam String descripcion, @RequestParam String autorID, @RequestParam String editorialID) throws MyException {
+    public void crearLibro(Long isbn, String titulo,
+            String descripcion, String autorID, String editorialID) throws MyException {
         validar(isbn,titulo,descripcion,autorID,editorialID);
         Optional<Editorial> editorialEncontrada = editorialRepository.findById(editorialID);
         Optional<Autor> autorEncontrado = autorRepository.findById(autorID);
@@ -65,6 +65,33 @@ public class LibroService {
             throw new MyException("La descripcion no puede estar vacía");
         }
         
+    }
+    @Transactional
+    public void modificarLibro(Long isbn, String titulo, String descripcion, String autorID, String editorialID) throws MyException {
+    Optional<Libro> optionalLibro = libroRepository.findById(isbn);
+    if (optionalLibro.isPresent()) {
+        Libro libro = optionalLibro.get();
+        libro.setTitulo(titulo);
+        libro.setDescripcion(descripcion);
         
+        Optional<Autor> optionalAutor = autorRepository.findById(autorID);
+        Optional<Editorial> optionalEditorial = editorialRepository.findById(editorialID);
+        
+        if (optionalAutor.isPresent() && optionalEditorial.isPresent()) {
+            libro.setAutor(optionalAutor.get());
+            libro.setEditorial(optionalEditorial.get());
+        } else {
+            throw new MyException("El autor o la editorial proporcionados no existen.");
+        }
+        
+        libroRepository.save(libro);
+    } else {
+        throw new MyException("El libro a modificar no existe.");
+    }
+}
+
+   
+    public void eliminarLibro(Long isbn){
+        libroRepository.deleteById(isbn);
     }
 }
