@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 /**
  *
  * @author marco
@@ -18,7 +19,16 @@ import org.springframework.stereotype.Service;
 public class EditorialService {
     @Autowired
     private EditorialRepository er;
+      public void crearEditorial(String nombre){
+        Editorial editorial = new Editorial();
+        editorial.setNombre(nombre);
+        editorial.setAlta(true);
+        er.save(editorial);
+    }
     
+    public void eliminarEditorial(String id){
+        er.deleteById(id);
+    }
     public List<Editorial> listarEditoriales(){
         return er.findAll();
     }

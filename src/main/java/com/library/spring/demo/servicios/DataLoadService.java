@@ -33,7 +33,8 @@ public class DataLoadService {
         List<Autor> autores = autorService.listarAutores();
         List<Editorial> editoriales = editorialService.listarEditoriales();
         List<Libro> libros = libroService.listarLibros();
-        Collections.sort(libros, Libro.compararPorTitulo);
+        Collections.sort(autores,Autor.compararNombre);
+        Collections.sort(editoriales,Editorial.compararNombre);
         modelo.addAttribute("autores", autores);
         modelo.addAttribute("editoriales", editoriales);
         modelo.addAttribute("libros", libros);

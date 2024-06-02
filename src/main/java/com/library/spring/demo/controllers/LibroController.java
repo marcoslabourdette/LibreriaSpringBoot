@@ -12,9 +12,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -31,38 +32,36 @@ public class LibroController {
 
 
     @PostMapping("/registrar")
-    public String registro(@RequestParam(required = false) Long isbn, @RequestParam String titulo, @RequestParam String descripcion, @RequestParam String autorID, @RequestParam String editorialID, ModelMap modelo) throws MyException {
+      public String registro(@RequestParam(required = false) String isbn, @RequestParam String titulo, @RequestParam String descripcion,@RequestParam String imagen, @RequestParam String autorID, @RequestParam String editorialID, RedirectAttributes redirectAttributes) {
         try {
-            libroService.crearLibro(isbn, titulo, descripcion, autorID, editorialID);
-            modelo.put("exito", "El libro se agregó correctamente!");
+            libroService.crearLibro(isbn, titulo, descripcion,imagen, autorID, editorialID);
+            redirectAttributes.addFlashAttribute("exito", "¡El libro se agregó correctamente! 😎");
         } catch (MyException e) {
-            modelo.put("error", e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage() + " 😬");
         }
-        dataService.cargarDatos(modelo);
-       return "redirect:/#libros";
+        return "redirect:/#libros";
     }
     
    @PostMapping("/modificar/{isbn}")
-    public String modificar(@PathVariable Long isbn, @RequestParam String titulo, @RequestParam String descripcion, @RequestParam String autorID, @RequestParam String editorialID, ModelMap modelo) throws MyException {
+    public String modificar(@PathVariable String isbn, @RequestParam String titulo, @RequestParam String descripcion,@RequestParam String imagen ,@RequestParam String autorID, @RequestParam String editorialID, ModelMap modelo,RedirectAttributes redirectAttributes) throws MyException {
     try {
-        libroService.modificarLibro(isbn, titulo, descripcion, autorID, editorialID);
-        modelo.put("exito", "El libro se modificó correctamente!");
+        libroService.modificarLibro(isbn, titulo, descripcion, imagen, autorID, editorialID);
+        redirectAttributes.addFlashAttribute("exito", "¡El libro se modificó correctamente! 😎");
     } catch (MyException e) {
-        modelo.put("error", e.getMessage());
+        redirectAttributes.addFlashAttribute("error", e.getMessage());
     }
     dataService.cargarDatos(modelo);
     return "redirect:/#libros";
 }
 
     @GetMapping("/eliminar/{isbn}")
-    public String eliminarLibro(@PathVariable Long isbn, ModelMap modelo){
+    public String eliminarLibro(@PathVariable String isbn, RedirectAttributes redirectAttributes){
         try {
-            libroService.eliminarLibro(isbn);
-            modelo.put("exito", "El libro se eliminó correctamente!");
+            libroService.eliminarLibro(isbn);            
+            redirectAttributes.addFlashAttribute("exito", "¡El libro se eliminó correctamente! 👋🏼" );
         } catch (Exception e) {
-            modelo.put("error",e.getMessage());
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return "redirect:/#libros";
     }
-
 }

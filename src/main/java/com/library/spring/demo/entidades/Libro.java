@@ -27,11 +27,13 @@ import lombok.NoArgsConstructor;
 public class Libro {
     @Id
     @Column(nullable=false)
-    private Long isbn;
+    private String isbn;
     @Column(nullable=false)
     private String titulo;
     @Column(nullable=false)
     private String descripcion;
+    @Column(nullable=false)
+    private String imagen_url;
     @Temporal(TemporalType.DATE)
     private Date alta;
     @ManyToOne

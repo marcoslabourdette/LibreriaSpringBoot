@@ -12,6 +12,7 @@ import com.library.spring.demo.repositorios.AutorRepository;
 import com.library.spring.demo.repositorios.EditorialRepository;
 import com.library.spring.demo.repositorios.LibroRepository;
 import jakarta.transaction.Transactional;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +34,8 @@ public class LibroService {
     @Autowired
     private AutorRepository autorRepository;
     @Transactional
-    public void crearLibro(Long isbn, String titulo,
-            String descripcion, String autorID, String editorialID) throws MyException {
+    public void crearLibro(String isbn, String titulo,
+            String descripcion, String imagen, String autorID, String editorialID) throws MyException {
         validar(isbn,titulo,descripcion,autorID,editorialID);
         Optional<Editorial> editorialEncontrada = editorialRepository.findById(editorialID);
         Optional<Autor> autorEncontrado = autorRepository.findById(autorID);
@@ -48,32 +49,35 @@ public class LibroService {
         libro.setIsbn(isbn);
         libro.setTitulo(titulo);
         libro.setDescripcion(descripcion);
+        libro.setImagen_url(imagen);
         libro.setAlta(new Date());
         libroRepository.save(libro);
     }
     public List<Libro> listarLibros(){
         return libroRepository.findAll();
     }
-    public void validar(Long isbn, String titulo, String descripcion, String autorID, String editorialID) throws MyException {
-        if(isbn == null){
-            throw new MyException("El isbn no puede ser nulo");
+    public void validar(String isbn, String titulo, String descripcion, String autorID, String editorialID) throws MyException {
+        if(isbn == null || !isbn.matches("\\d+")){
+            throw new MyException("El ISBN debe contener solo números");
+        }
+        else if(!libroRepository.findById(isbn).isEmpty()){
+            throw new MyException("El ISBN ingresado ya está registrado");
         }
         if(titulo.isEmpty() || titulo == null){
-            throw new MyException("El titulo no puede ser nulo o estar vacío.");
+            throw new MyException("El titulo no puede ser nulo o estar vacío");
         }
         if(descripcion.isEmpty() || descripcion == null){
             throw new MyException("La descripcion no puede estar vacía");
         }
-        
     }
     @Transactional
-    public void modificarLibro(Long isbn, String titulo, String descripcion, String autorID, String editorialID) throws MyException {
+    public void modificarLibro(String isbn, String titulo, String descripcion, String imagen, String autorID, String editorialID) throws MyException {
     Optional<Libro> optionalLibro = libroRepository.findById(isbn);
     if (optionalLibro.isPresent()) {
         Libro libro = optionalLibro.get();
         libro.setTitulo(titulo);
         libro.setDescripcion(descripcion);
-        
+        libro.setImagen_url(imagen);
         Optional<Autor> optionalAutor = autorRepository.findById(autorID);
         Optional<Editorial> optionalEditorial = editorialRepository.findById(editorialID);
         
@@ -81,17 +85,17 @@ public class LibroService {
             libro.setAutor(optionalAutor.get());
             libro.setEditorial(optionalEditorial.get());
         } else {
-            throw new MyException("El autor o la editorial proporcionados no existen.");
+            throw new MyException("El autor o la editorial proporcionados no existen ");
         }
         
         libroRepository.save(libro);
     } else {
-        throw new MyException("El libro a modificar no existe.");
+        throw new MyException("El libro a modificar no existe");
     }
 }
 
    
-    public void eliminarLibro(Long isbn){
+    public void eliminarLibro(String isbn){
         libroRepository.deleteById(isbn);
     }
 }

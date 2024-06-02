@@ -8,6 +8,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import java.util.Comparator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,11 @@ public class Editorial {
     private String nombre;
     @Column(nullable = false)
     private boolean alta;
+    
+    public static Comparator<Editorial> compararNombre = new Comparator<Editorial>(){
+        @Override
+        public int compare(Editorial e1, Editorial e2){
+            return e1.getNombre().compareTo(e2.getNombre());
+        }
+    };
 }

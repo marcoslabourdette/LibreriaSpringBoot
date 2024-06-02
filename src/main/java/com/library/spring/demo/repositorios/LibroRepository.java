@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author marco
  */
 @Repository
-public interface LibroRepository extends JpaRepository<Libro,Long> {
+public interface LibroRepository extends JpaRepository<Libro,String> {
     
 }
