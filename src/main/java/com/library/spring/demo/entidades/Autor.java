@@ -35,6 +35,8 @@ public class Autor {
     private String nacionalidad;
     @Column(nullable=false)
     private LocalDate nacimiento;
+    @Column(nullable=false)
+    private String bio;
      @Column(nullable=false)
     private String imagenUrl;
     @Column(nullable = false)

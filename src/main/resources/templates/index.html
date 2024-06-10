@@ -3,7 +3,7 @@
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
 -->
-<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Library SB | Inicio</title>
@@ -32,7 +32,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <li class="navbar-item"><a href="#libros">Libros</a></li>
                 <li class="navbar-item"><a href="#autores">Autores</a></li>
                 <li class="navbar-item"><a href="#editoriales">Editoriales</a></li>
-                <li class="navbar-item"><a href="">Reportes</a></li>
+                <li class="navbar-item"><a href="#reportes">Reportes</a></li>
             </ul>
             <div class="navbar-icon">
                 <a id="btnMenu"><i class="bi bi-list"></i></a>
@@ -49,11 +49,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </div>
         <article id="menu" class="articulo">
-            <h2>🌱 ¡Comenzá a administrar tu biblioteca! 🌱</h2>
+            <h2 class="menu-title">Administrá tu biblioteca!</h2>
             <section class="container-cards">
                 <div class="card">
                     <div class="card-title">
-                    <h3>¡Guardá tus libros preferidos!</h3>
+                        <h3>¡Guardá tus libros preferidos!</h3>
                     </div>
                     <i class="bi bi-bookmark-heart"></i>
                     <p>Guardá tus libros favoritos en tu biblioteca personal para tenerlos siempre a mano.</p>
@@ -69,11 +69,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="card">
                     <div class="card-title">
-                        <h3>Descargá reportes actualizados</h3>
+                        <h3>Descargá reportes</h3>
                     </div>
                     <i class="bi bi-file-earmark-bar-graph"></i>
                     <p>Generá informes sobre tu biblioteca para realizar un seguimiento de tu colección.</p>
-                    <a href="">Descargar reportes</a>
+                    <a href="#reportes">Descargar reportes</a>
                 </div>
             </section>
         </article>
@@ -84,7 +84,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <div class="div-error" id="mensaje-error" th:if="${error != null}">
                 <p th:text=${error}></p>
             </div>
-            <h2 class="title-pages">Organizá tus libros</h2>
+            <h2 class="title-pages">Administrá tus libros</h2>
             <div th:if="${libros != null and not #lists.isEmpty(libros)}" class="tabla-libros" id="librosTable">
                 <table class="table">
                     <thead>
@@ -99,29 +99,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <tbody>
                         <tr th:each="libro:${libros}" th:attr="data-isbn=${libro.isbn}, 
                         data-titulo=${libro.titulo}, 
-                        data-autor=${libro.autor.nombre}, 
-                        data-editorial=${libro.editorial.nombre}, 
+                        data-autor=${libro.autor.nombre},
+                        data-autorID=${libro.autor.id}, 
+                        data-editorial=${libro.editorial.nombre},
+                        data-editorialID=${libro.editorial.id}, 
                         data-descripcion=${libro.descripcion},
                         data-imagen=${libro.imagen_url},
                         data-fecha=${libro.alta}">
                             <td th:text="${libro.isbn}"></td>
                             <td th:text="${libro.titulo}"></td>
                             <td th:text="${libro.autor.nombre}"></td>
-                            <td><i onclick="mostrarInfoLibro(this.parentNode.parentNode)" title="Ver detalle." class="bi bi-info-circle"></i></td>
-                            <td><i onclick="mostrarModalModificar(this.parentNode.parentNode)" title="Modificar libro." class="bi bi-pencil-square"></i><a onclick="eliminarLibro(this.parentNode.parentNode)"><i title="Eliminar libro." class="bi bi-trash btnEliminarLibro"></i></a></td>
+                            <td><i onclick="mostrarInfoLibro(this.parentNode.parentNode)" title="Ver detalle."
+                                    class="bi bi-info-circle"></i></td>
+                            <td><i onclick="mostrarModalModificar(this.parentNode.parentNode)" title="Modificar libro."
+                                    class="bi bi-pencil-square"></i><a
+                                    onclick="eliminarLibro(this.parentNode.parentNode)"><i title="Eliminar libro."
+                                        class="bi bi-trash btnEliminarLibro"></i></a></td>
                         </tr>
                     </tbody>
                 </table>
-               
+
             </div>
             <div class="libros-empty" th:if="${libros == null or #lists.isEmpty(libros)}">
-                <img width="30px" src="/images/hoja.png" alt="">
-                <p>No hay libros en tu biblioteca</p>
+                <img width="30px" src="/images/hoja.png" alt="logo library sb">
+                <p>No hay libros registrados</p>
             </div>
             <div class="accionesLibro">
                 <a onclick="mostrarModalAgregar()" id="btnModal">Agregar</a>
-                <a th:if="${libros != null and not #lists.isEmpty(libros)}" onclick="" id="btnModal">Buscar</a>
-                <a title="Ordenar alfabéticamente" th:if="${libros != null and not #lists.isEmpty(libros)}" onclick="ordenarLibrosAlfabeticamente()" id="btnModal">Ordenar</a>    
+                <a title="Ordenar alfabéticamente" th:if="${libros != null and #lists.size(libros) > 1}"
+                    onclick="ordenarLibrosAlfabeticamente()" id="btnModal">Ordenar</a>                 
             </div>
             <div class="home">
                 <div class="home-text">
@@ -130,35 +136,41 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <form class="form" action="/libro/registrar" method="POST">
                         <div class="form-group">
                             <label for="ib">ISBN</label>
-                            <input id="ib" name="isbn" type="text" maxlength="45" placeholder="Ingrese el ISBN" required>
+                            <input id="ib" name="isbn" type="text" maxlength="55" placeholder="Ingrese el ISBN"
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="title">Título</label>
-                            <input id="title" name="titulo" type="text" maxlength="35" placeholder="Ingrese el título." required>
+                            <input id="title" name="titulo" type="text" maxlength="55" placeholder="Ingrese el título."
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="descrip">Descripción</label>
-                            <input id="descrip" name="descripcion" type="text" maxlength="145" placeholder="Ingrese una breve descripción." required>
+                            <input id="descrip" name="descripcion" type="text" maxlength="175"
+                                placeholder="Ingrese una breve descripción." required>
                         </div>
                         <div class="form-group flex-group">
                             <div>
-                                <label for="seAutor">Autor</label>
+                                <label for="seAutor">Autores</label>
                                 <select name="autorID" id="seAutor" required>
-                                    <option disabled selected value="">---- Seleccionar ----</option>
-                                    <option th:each="autor:${autores}" th:value="${autor.id}" th:text="${autor.nombre}"></option>
+                                    <option disabled selected value="">---- Seleccionar autor ----</option>
+                                    <option th:each="autor:${autores}" th:value="${autor.id}" th:text="${autor.nombre}">
+                                    </option>
                                 </select>
                             </div>
                             <div>
-                                <label for="seEditorial">Editorial</label>
+                                <label for="seEditorial">Editoriales</label>
                                 <select name="editorialID" id="seEditorial" required>
-                                    <option disabled selected value="">---- Seleccionar ----</option>
-                                    <option th:each="editorial:${editoriales}" th:value="${editorial.id}" th:text="${editorial.nombre}"></option>
+                                    <option disabled selected value="">---- Seleccionar editorial ----</option>
+                                    <option th:each="editorial:${editoriales}" th:value="${editorial.id}"
+                                        th:text="${editorial.nombre}"></option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="imagen">Subir URL Imagen (Opcional):</label>
-                            <input id="imagen" name="imagen" type="text" maxlength="145" placeholder="Ingrese URL de la imagen.">
+                            <input id="imagen" name="imagen" type="text" maxlength="245"
+                                placeholder="Ingrese URL de la imagen.">
                         </div>
                         <input class="btn-form" type="submit" value="¡Guardar!">
                     </form>
@@ -169,34 +181,40 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </section>
         <section id="autores" class="container-tablas">
+            <h2 class="title-pages">Administrá tus autores</h2>
             <div class="tablasAutorEditorial">
-                <h2 class="title-pages">Administrá tus autores</h2>
                 <div th:if="${autores != null and not #lists.isEmpty(autores)}" class="tabla-libros">
-                    <table class="table">
+                    <table class="table autores">
                         <thead>
                             <tr>
                                 <th scope="col">Nombre</th>
+                                <th scope="col">Nacionalidad</th>
                                 <th scope="col">Nacimiento</th>
                                 <th scope="col">Detalle</th>
-                                <th scope="col">Acciones:</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="autor:${autores}" th:attr="data-id=${autor.id}, 
                             data-nombre=${autor.nombre},data-nacionalidad=${autor.nacionalidad},
-                            data-nacimiento=${autor.nacimiento}, 
-                            data-imagen=${autor.imagenUrl}, data-tipo=autor">
-                            <td th:text="${autor.nombre}"></td>
-                            <td th:text="${autor.nacimiento}"></td>
-                            <td><i onclick="mostrarInfoAutor(this.parentNode.parentNode)" title="Ver detalle." class="bi bi-info-circle"></i></td>
-                            <td><i onclick="mostrarModalModificarAutor(this.parentNode.parentNode)" title="Modificar libro." class="bi bi-pencil-square"></i><a onclick="eliminarAutorEditorial(this.parentNode.parentNode)"><i title="Eliminar autor." class="bi bi-trash btnEliminarLibro"></i></a></td>
+                            data-nacimiento=${autor.nacimiento},
+                            data-bio=${autor.bio}, data-imagen=${autor.imagenUrl}, data-tipo=autor">
+                                <td th:text="${autor.nombre}"></td>
+                                <td th:text="${autor.nacionalidad}"></td>
+                                <td th:text="${autor.nacimiento}"></td>
+                                <td><i onclick="mostrarInfoAutor(this.parentNode.parentNode)" title="Ver detalle."
+                                        class="bi bi-info-circle"></i></td>
+                                <td><i onclick="mostrarModalModificarAutor(this.parentNode.parentNode)"
+                                        title="Modificar autor." class="bi bi-pencil-square"></i><a
+                                        onclick="eliminarAutorEditorial(this.parentNode.parentNode)"><i
+                                            title="Eliminar autor." class="bi bi-trash btnEliminarLibro"></i></a></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="libros-empty" th:if="${autores == null or #lists.isEmpty(autores)}">
-                    <img width="30px" src="/images/hoja.png" alt="">
-                    <p>No hay autores en tu biblioteca</p>
+                    <img width="30px" src="/images/hoja.png" alt="logo librarysb">
+                    <p>No hay autores registrados</p>
                 </div>
                 <a onclick="mostrarModalAutor()" class="agregarAutorEditorial" id="btnModal">Agregar</a>
                 <div class="modalAutor">
@@ -206,19 +224,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <form class="form" action="/autor/registrar" method="POST">
                             <div class="form-group">
                                 <label for="name">Nombre</label>
-                                <input id="name" name="nombre" maxlength="35" type="text" placeholder="Ingrese el nombre del autor." required>
+                                <input id="name" name="nombre" maxlength="35" type="text"
+                                    placeholder="Ingrese el nombre del autor." required>
                             </div>
                             <div class="form-group">
                                 <label for="paisOrigen">Nacionalidad</label>
-                                <input type="text" name="nacionalidad" id="paisOrigen" placeholder="Ingrese su nacionalidad (Ejemplo: Francés)" required>
+                                <input type="text" name="nacionalidad" id="paisOrigen" maxlength="45"
+                                    placeholder="Ingrese su nacionalidad (Ejemplo: Francés)" required>
                             </div>
                             <div class="form-group">
                                 <label for="fechaNacimiento">Fecha de nacimiento</label>
                                 <input type="date" name="nacimiento" id="fechaNacimiento" required>
                             </div>
                             <div class="form-group">
-                                <label for="imagenAutor">Subir URL Imagen</label>
-                                <input type="text" id="imagenAutor" name="imagenUrl" placeholder="Ingrese URL de la imagen." required>
+                                <label for="imagenAutor">Imagen URL</label>
+                                <input type="text" id="imagenAutor" maxlength="245" name="imagenUrl"
+                                    placeholder="Ingrese URL de la imagen." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bio">Biografía (Wikipedia) </label>
+                                <input type="text" id="bio" name="bio" maxlength="255"
+                                    placeholder="Ingrese el enlace a la biografía en Wikipedia">
                             </div>
                             <input class="btn-form" type="submit" value="¡Guardar!">
                         </form>
@@ -226,30 +252,34 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
             </div>
         </section>
-        <section id="editoriales">
+        <section id="editoriales" class="container-tablas">
+            <h2 class="title-pages">Administrá tus editoriales</h2>
             <div class="tablasAutorEditorial">
-                <h2 class="title-pages">Administrá tus editoriales</h2>
                 <div th:if="${editoriales != null and not #lists.isEmpty(editoriales)}" class="tabla-libros">
-                    <table class="table">
+                    <table class="table editorial">
                         <thead>
                             <tr>
                                 <th scope="col">Nombre</th>
+                                <th scope="col">País de origen</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="editor:${editoriales}" th:attr="data-id=${editor.id}, 
                             data-nombre=${editor.nombre},
+                            data-paisOrigen=${editor.paisOrigen},
                             data-tipo=editorial">
                                 <td th:text="${editor.nombre}"></td>
-                                <td><a onclick="eliminarAutorEditorial(this.parentNode.parentNode)"><i title="Eliminar autor." class="bi bi-trash btnEliminarLibro"></i></a></td>
+                                <td th:text="${editor.paisOrigen}"></td>
+                                <td><a onclick="eliminarAutorEditorial(this.parentNode.parentNode)"><i
+                                            title="Eliminar editorial." class="bi bi-trash btnEliminarLibro"></i></a></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="libros-empty" th:if="${editoriales == null or #lists.isEmpty(editoriales)}">
                     <img width="30px" src="/images/hoja.png" alt="">
-                    <p>No hay editoriales en tu biblioteca</p>
+                    <p>No hay editoriales registradas</p>
                 </div>
                 <a onclick="mostrarModalEditorial()" class="agregarAutorEditorial" id="btnModal">Agregar</a>
                 <div class="modalEditorial">
@@ -259,7 +289,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <form class="form" action="/editorial/registrar" method="POST">
                             <div class="form-group">
                                 <label for="name_editor">Nombre</label>
-                                <input id="name_editor" name="nombre" maxlength="35" type="text" placeholder="Ingrese el nombre de la editorial." required>
+                                <input id="name_editor" name="nombre" maxlength="45" type="text"
+                                    placeholder="Ingrese el nombre de la editorial." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pais_editor">País de origen</label>
+                                <input id="pais_editor" name="paisOrigen" maxlength="65" type="text" placeholder="Ingrese el país de origen." required>
                             </div>
                             <input class="btn-form" type="submit" value="¡Guardar!">
                         </form>
@@ -267,9 +302,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
             </div>
         </section>
+        <section id="reportes" class="container-reportes">
+            <div class="reporte-content">
+                <div class="reporte-info">
+                    <h3>Libros </h3>
+                    <p>Este reporte contiene una lista completa de libros disponibles en nuestra biblioteca,
+                        incluyendo el título, autor, editorial y la fecha de alta.</p>
+                    <a th:if="${libros != null and not #lists.isEmpty(libros)}" class="btn-descargarLibros"
+                        th:href="@{/libro/reportes}">Descargar <i class="bi bi-download"></i></a>
+                    <a th:if="${#lists.isEmpty(libros)}" class="btn-descargarLibros disabled-link">No hay libros
+                        disponibles</a>
+                </div>
+                <div class="reporte-info">
+                    <h3>Autores</h3>
+                    <p>Este reporte contiene una lista completa de autores disponibles en nuestra biblioteca, incluyendo nombre, nacionalidad y nacimiento.</p>
+                    <a th:if="${autores != null and not #lists.isEmpty(autores)}" class="btn-descargarLibros"
+                        th:href="@{/autor/reportes}">Descargar  <i class="bi bi-download"></i></a>
+                    <a th:if="${#lists.isEmpty(autores)}" class="btn-descargarLibros disabled-link">No hay autores
+                        disponibles</a>
+                </div>
+                <div class="reporte-info">
+                    <h3>Editoriales</h3>
+                    <p>Este reporte contiene una lista completa de editoriales disponibles en nuestra biblioteca, incluyendo nombre y país de origen.</p>
+                    <a th:if="${editoriales != null and not #lists.isEmpty(editoriales)}" class="btn-descargarLibros" th:href="@{/editorial/reportes}">Descargar  <i class="bi bi-download"></i></a>
+                    <a th:if="${#lists.isEmpty(editoriales)}" class="btn-descargarLibros disabled-link">No hay editoriales
+                        disponibles</a>
+                </div>
+            </div>
+            </div>
+        </section>
     </main>
     <div class="infoLibro"></div>
-    <div class ="infoAutor"></div>
+    <div class="infoAutor"></div>
     <div class="borrarLibro">
         <p>¿Estás seguro de eliminar?</p>
         <p class="nombreLibro"></p>
@@ -279,7 +343,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
     </div>
     <footer class="footer">
-        <p style="color: white;">© Copyright  2024 | Marcos Labourdette</p>
+        <p>© Copyright 2024 | Marcos Labourdette</p>
     </footer>
     <script src="/js/script.js"></script>
 </body>

@@ -29,6 +29,8 @@ public class Editorial {
     private String id;
     @Column(nullable = false)
     private String nombre;
+     @Column(nullable = false)
+    private String paisOrigen;
     @Column(nullable = false)
     private boolean alta;
     
