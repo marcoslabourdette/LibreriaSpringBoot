@@ -24,6 +24,9 @@
             <Env.DB_PASSWORD>FlZeAMofEghfiAcfGcHJNanzDrFeumxm</Env.DB_PASSWORD>
             
             
+            <Env.PORT>0.0.0.0</Env.PORT>
+            
+            
             
             
             
@@ -79,6 +82,9 @@
                 <Env.DB_PASSWORD>FlZeAMofEghfiAcfGcHJNanzDrFeumxm</Env.DB_PASSWORD>
                 
                 
+                <Env.PORT>0.0.0.0</Env.PORT>
+                
+                
                 
             </properties>
         </action>
@@ -95,6 +101,7 @@
                 <Env.DB_HOST>roundhouse.proxy.rlwy.net</Env.DB_HOST>
                 <Env.DB_PORT>21667</Env.DB_PORT>
                 <Env.DB_NAME>railway</Env.DB_NAME>
+                <Env.PORT>0.0.0.0</Env.PORT>
                 <Env.DB_USER>root</Env.DB_USER>
                 
                 
@@ -116,6 +123,7 @@
                 <Env.DB_HOST>roundhouse.proxy.rlwy.net</Env.DB_HOST>
                 <Env.DB_PORT>21667</Env.DB_PORT>
                 <Env.DB_NAME>railway</Env.DB_NAME>
+                <Env.PORT>0.0.0.0</Env.PORT>
                 <Env.DB_USER>root</Env.DB_USER>
                 
                 
