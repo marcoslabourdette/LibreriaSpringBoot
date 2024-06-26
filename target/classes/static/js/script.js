@@ -22,7 +22,6 @@ const modalExito = document.getElementById("mensaje-exito");
 const modalError = document.getElementById("mensaje-error");
 const menuTitle = document.querySelector(".menu-title");
 
-
 // Funciones de eventos
 function ajustarEstiloHeader() {
     const scrollPos = window.scrollY;
@@ -205,7 +204,7 @@ function eliminarAutorEditorial(elemento){
     else{
         btnBorrarLibro.setAttribute("href",`/editorial/eliminar/${id}`);
     }
-    nombreLibroEliminar.textContent = `${nombre}`; 
+    nombreLibroEliminar.textContent = `${nombre}?`; 
     modalBorrar.classList.add("visibleModal");
 }
 function eliminarLibro(elemento){
@@ -216,7 +215,7 @@ function eliminarLibro(elemento){
     const nombreLibroEliminar = document.querySelector(".borrarLibro .nombreLibro");
     abrirOverlay();
     btnBorrarLibro.setAttribute("href",`/libro/eliminar/${isbnLibro}`)
-    nombreLibroEliminar.textContent = `${nombreLibro}`; 
+    nombreLibroEliminar.textContent = `${nombreLibro}?`; 
     modalBorrar.classList.add("visibleModal");
 }
 function cerrarConfirmacion(){
@@ -226,10 +225,12 @@ function cerrarConfirmacion(){
 }
 function cerrarOverlay() {
     modalOverlay.style.display = "none";
+    document.body.style.overflow = 'auto';
 }
 
 function abrirOverlay(){
     modalOverlay.style.display = "block";
+    document.body.style.overflow = 'hidden';
 }
 
 function mostrarInfoAutor(elemento){
@@ -248,7 +249,7 @@ function mostrarInfoAutor(elemento){
         { nombre: ['japonés', 'japones', 'japonesa'], bandera: '🇯🇵' },
         { nombre: ['frances', 'francés', 'francesa'], bandera: '🇫🇷' },
         { nombre: ['aleman', 'alemán', 'alemana'], bandera: '🇩🇪' },
-        { nombre: ['chino', 'china'], bandera: '🇨🇳' },
+        { nombre: ['chino', 'china','chinese'], bandera: '🇨🇳' },
         { nombre: ['mexicano', 'mexicana'], bandera: '🇲🇽' },
         { nombre: ['colombiano', 'colombiana'], bandera: '🇨🇴' },
         { nombre: ['peruano', 'peruana'], bandera: '🇵🇪' },
@@ -336,7 +337,7 @@ function mostrarInfoLibro(elemento) {
             <p>Autor: ${autor}</p>
             <p>Editorial: ${editorial}</p>
             <p>Fecha de alta: ${fecha}</p>
-            <p>Descripcióon:${descripcion}</p>
+            <p>Descripción:<br>${descripcion}</p>
             </div>
         </div>
         `;
@@ -353,7 +354,7 @@ function mostrarInfoLibro(elemento) {
             <p>Autor: ${autor}</p>
             <p>Editorial: ${editorial}</p>
             <p>Fecha de alta: ${fecha}</p>
-            <p>Descripción:<br>${descripcion}</p>
+            <p>Descripción: ${descripcion}</p>
             </div>
         </div>
         `;

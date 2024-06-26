@@ -7,6 +7,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 <head>
     <title>Library SB | Inicio</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
@@ -16,7 +18,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-
 <body>
     <header id="header">
         <a href="#">
@@ -49,11 +50,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </div>
         <article id="menu" class="articulo">
-            <h2 class="menu-title">Administrá tu biblioteca!</h2>
+            <h2 class="menu-title">¡Administrá tu biblioteca!</h2>
             <section class="container-cards">
                 <div class="card">
                     <div class="card-title">
-                        <h3>¡Guardá tus libros preferidos!</h3>
+                        <h3>Guardá tus libros preferidos</h3>
                     </div>
                     <i class="bi bi-bookmark-heart"></i>
                     <p>Guardá tus libros favoritos en tu biblioteca personal para tenerlos siempre a mano.</p>
@@ -77,22 +78,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
             </section>
         </article>
-        <section id="libros" class="container-libros">
-            <div class="div-exito" id="mensaje-exito" th:if="${exito != null}">
-                <p th:text=${exito}></p>
-            </div>
-            <div class="div-error" id="mensaje-error" th:if="${error != null}">
-                <p th:text=${error}></p>
-            </div>
+        <section id="libros" class="container-libros"> 
             <h2 class="title-pages">Administrá tus libros</h2>
             <div th:if="${libros != null and not #lists.isEmpty(libros)}" class="tabla-libros" id="librosTable">
-                <table class="table">
+                <table id="tablaLibros" class="table">
                     <thead>
                         <tr>
                             <th scope="col">Isbn</th>
                             <th scope="col">Título</th>
                             <th scope="col">Autor</th>
-                            <th scope="col">Detalle</th>
+                            <th scope="col">Info</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -118,17 +113,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         </tr>
                     </tbody>
                 </table>
-
             </div>
             <div class="libros-empty" th:if="${libros == null or #lists.isEmpty(libros)}">
                 <img width="30px" src="/images/hoja.png" alt="logo library sb">
                 <p>No hay libros registrados</p>
             </div>
-            <div class="accionesLibro">
-                <a onclick="mostrarModalAgregar()" id="btnModal">Agregar</a>
-                <a title="Ordenar alfabéticamente" th:if="${libros != null and #lists.size(libros) > 1}"
-                    onclick="ordenarLibrosAlfabeticamente()" id="btnModal">Ordenar</a>                 
-            </div>
+            <a onclick="mostrarModalAgregar()" id="btnModal">Agregar</a>
             <div class="home">
                 <div class="home-text">
                     <a class="cerrar-modal"><i class="bi bi-x"></i></a>
@@ -136,7 +126,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <form class="form" action="/libro/registrar" method="POST">
                         <div class="form-group">
                             <label for="ib">ISBN</label>
-                            <input id="ib" name="isbn" type="text" maxlength="55" placeholder="Ingrese el ISBN"
+                            <input id="ib" name="isbn" type="text" maxlength="16" placeholder="Ingrese el ISBN"
                                 required>
                         </div>
                         <div class="form-group">
@@ -184,13 +174,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <h2 class="title-pages">Administrá tus autores</h2>
             <div class="tablasAutorEditorial">
                 <div th:if="${autores != null and not #lists.isEmpty(autores)}" class="tabla-libros">
-                    <table class="table autores">
+                    <table id="tablaAutores" class="table autores">
                         <thead>
                             <tr>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Nacionalidad</th>
                                 <th scope="col">Nacimiento</th>
-                                <th scope="col">Detalle</th>
+                                <th scope="col">Info</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -216,7 +206,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <img width="30px" src="/images/hoja.png" alt="logo librarysb">
                     <p>No hay autores registrados</p>
                 </div>
-                <a onclick="mostrarModalAutor()" class="agregarAutorEditorial" id="btnModal">Agregar</a>
+                <a onclick="mostrarModalAutor()" class="agregarAutorEditorial" id="btnModal">Agregar</i></a>
                 <div class="modalAutor">
                     <div class="modalAutor-text">
                         <a class="cerrar-modal"><i class="bi bi-x"></i></a>
@@ -234,7 +224,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </div>
                             <div class="form-group">
                                 <label for="fechaNacimiento">Fecha de nacimiento</label>
-                                <input type="date" name="nacimiento" id="fechaNacimiento" required>
+                                <input type="date" name="nacimiento" id="fechaNacimiento" placeholder="Ingrese fecha de nacimiento." required>
                             </div>
                             <div class="form-group">
                                 <label for="imagenAutor">Imagen URL</label>
@@ -256,11 +246,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <h2 class="title-pages">Administrá tus editoriales</h2>
             <div class="tablasAutorEditorial">
                 <div th:if="${editoriales != null and not #lists.isEmpty(editoriales)}" class="tabla-libros">
-                    <table class="table editorial">
+                    <table id="tablaEditoriales" class="table editorial">
                         <thead>
                             <tr>
                                 <th scope="col">Nombre</th>
-                                <th scope="col">País de origen</th>
+                                <th scope="col">País</th>
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -304,10 +294,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </section>
         <section id="reportes" class="container-reportes">
             <div class="reporte-content">
+                 <h2>Reportes</h2>
                 <div class="reporte-info">
                     <h3>Libros </h3>
-                    <p>Este reporte contiene una lista completa de libros disponibles en nuestra biblioteca,
-                        incluyendo el título, autor, editorial y la fecha de alta.</p>
+                    <p>Este reporte contiene una lista completa de los libros disponibles en nuestra biblioteca. 
+                        Incluye título, autor, editorial y fecha de alta.</p>
                     <a th:if="${libros != null and not #lists.isEmpty(libros)}" class="btn-descargarLibros"
                         th:href="@{/libro/reportes}">Descargar <i class="bi bi-download"></i></a>
                     <a th:if="${#lists.isEmpty(libros)}" class="btn-descargarLibros disabled-link">No hay libros
@@ -315,7 +306,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="reporte-info">
                     <h3>Autores</h3>
-                    <p>Este reporte contiene una lista completa de autores disponibles en nuestra biblioteca, incluyendo nombre, nacionalidad y nacimiento.</p>
+                    <p>Este reporte contiene una lista completa de los autores disponibles en nuestra biblioteca.
+                       Incluye nombre, nacionalidad y nacimiento.</p>
                     <a th:if="${autores != null and not #lists.isEmpty(autores)}" class="btn-descargarLibros"
                         th:href="@{/autor/reportes}">Descargar  <i class="bi bi-download"></i></a>
                     <a th:if="${#lists.isEmpty(autores)}" class="btn-descargarLibros disabled-link">No hay autores
@@ -323,7 +315,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </div>
                 <div class="reporte-info">
                     <h3>Editoriales</h3>
-                    <p>Este reporte contiene una lista completa de editoriales disponibles en nuestra biblioteca, incluyendo nombre y país de origen.</p>
+                    <p>Este reporte contiene una lista completa de las editoriales disponibles en nuestra biblioteca. 
+                      Incluye nombre y país de origen.</p>
                     <a th:if="${editoriales != null and not #lists.isEmpty(editoriales)}" class="btn-descargarLibros" th:href="@{/editorial/reportes}">Descargar  <i class="bi bi-download"></i></a>
                     <a th:if="${#lists.isEmpty(editoriales)}" class="btn-descargarLibros disabled-link">No hay editoriales
                         disponibles</a>
@@ -332,10 +325,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </section>
     </main>
+    <div class="div-exito" id="mensaje-exito" th:if="${exito != null}">
+        <p th:text=${exito}></p>
+    </div>
+    <div class="div-error" id="mensaje-error" th:if="${error != null}">
+        <p th:text=${error}></p>
+    </div>
     <div class="infoLibro"></div>
     <div class="infoAutor"></div>
     <div class="borrarLibro">
-        <p>¿Estás seguro de eliminar?</p>
+        <p>¿Estás seguro de eliminar a</p>
         <p class="nombreLibro"></p>
         <div>
             <a class="confirmar" href="#">Si</a>
@@ -345,6 +344,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <footer class="footer">
         <p>© Copyright 2024 | Marcos Labourdette</p>
     </footer>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="/js/tablas.js"></script>
     <script src="/js/script.js"></script>
 </body>
 
