@@ -1,5 +1,6 @@
 com\library\spring\demo\reportes\LibroExporterPDF.class
 com\library\spring\demo\servicios\EditorialService.class
+com\library\spring\demo\configuraciones\SecurityConfig.class
 com\library\spring\demo\controllers\MainController.class
 com\library\spring\demo\entidades\Libro.class
 com\library\spring\demo\controllers\AutorController.class

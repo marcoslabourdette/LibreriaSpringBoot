@@ -15,6 +15,9 @@
             
             <run.mainClass>com.library.spring.demo.Com.library.springApplication</run.mainClass>
             <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
+            <Env.DB_URL>jdbc:mysql://localhost:3306/library</Env.DB_URL>
+            <Env.DB_USER_NAME>root</Env.DB_USER_NAME>
+            <Env.DB_PASSWORD>YES</Env.DB_PASSWORD>
             
             
             
@@ -74,6 +77,11 @@
             <goals>
                 <goal>install</goal>
             </goals>
+            <properties>
+                <Env.DB_URL>jdbc:mysql://localhost:3306/library</Env.DB_URL>
+                <Env.DB_USER_NAME>root</Env.DB_USER_NAME>
+                <Env.DB_PASSWORD>YES</Env.DB_PASSWORD>
+            </properties>
         </action>
     <action>
             <actionName>rebuild</actionName>
@@ -84,6 +92,11 @@
                 <goal>clean</goal>
                 <goal>install</goal>
             </goals>
+            <properties>
+                <Env.DB_URL>jdbc:mysql://localhost:3306/library</Env.DB_URL>
+                <Env.DB_USER_NAME>root</Env.DB_USER_NAME>
+                <Env.DB_PASSWORD>YES</Env.DB_PASSWORD>
+            </properties>
         </action>
     <action>
             <actionName>clean</actionName>
@@ -93,6 +106,11 @@
             <goals>
                 <goal>clean</goal>
             </goals>
+            <properties>
+                <Env.DB_URL>jdbc:mysql://localhost:3306/library</Env.DB_URL>
+                <Env.DB_USER_NAME>root</Env.DB_USER_NAME>
+                <Env.DB_PASSWORD>YES</Env.DB_PASSWORD>
+            </properties>
         </action>
     
     
